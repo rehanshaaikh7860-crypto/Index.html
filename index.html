@@ -29,7 +29,7 @@
       display: none;
       width: 100%;
       height: 100%;
-      padding: 40px 20px 80px 20px;
+      padding: 60px 20px 90px 20px;
       position: absolute;
       top: 0; left: 0;
       overflow-y: auto;
@@ -38,128 +38,93 @@
       align-items: center;
       text-align: center;
       background: #ffffff;
-      opacity: 0;
     }
 
-    /* MORPH / SLIDE ANIMATIONS */
+    /* GUARANTEED WORKING HARDWARE-ACCELERATED ANIMATION */
     .slide.active {
       display: flex;
-      opacity: 1;
-      animation: slideInMorph 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      animation: smoothSlideIn 0.5s ease-out forwards;
     }
 
-    @keyframes slideInMorph {
+    @keyframes smoothSlideIn {
       0% {
         opacity: 0;
-        transform: scale(0.85) translateY(40px) rotateX(-10deg);
-        filter: blur(10px);
+        transform: translate3d(0, 30px, 0);
       }
       100% {
         opacity: 1;
-        transform: scale(1) translateY(0) rotateX(0deg);
-        filter: blur(0px);
+        transform: translate3d(0, 0, 0);
       }
     }
 
-    /* VIDEO REFERENCE 1: ANIMATED TEXT IMAGE MASK FOR WELCOME */
-    .welcome-title-mask {
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 900;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      background: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80') center/cover;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: panBackground 12s infinite alternate linear;
+    .welcome-title-animated {
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 800;
+      color: #1e3a8a;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      animation: pulseText 2s infinite alternate ease-in-out;
     }
-    @keyframes panBackground {
-      0% { background-position: left center; }
-      100% { background-position: right center; }
+
+    @keyframes pulseText {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.03); }
     }
 
     .slide-title {
-      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
       color: #1e3a8a;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       font-weight: 800;
-      animation: titlePop 0.8s ease-out forwards;
-    }
-    @keyframes titlePop {
-      0% { transform: translateY(-20px); opacity: 0; }
-      100% { transform: translateY(0); opacity: 1; }
+      border-bottom: 3px solid #2563eb;
+      padding-bottom: 6px;
     }
     
     .member-badge {
       position: absolute;
-      top: 25px;
-      left: 30px;
+      top: 15px;
+      left: 15px;
       background: #eff6ff;
       border: 1px solid #bfdbfe;
       color: #1d4ed8;
-      padding: 6px 18px;
+      padding: 6px 14px;
       border-radius: 20px;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
 
-    /* TEAM GRID ANIMATION */
+    /* TEAM GRID ANIMATIONS */
     .team-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
       width: 100%;
-      max-width: 900px;
+      max-width: 800px;
     }
     .team-card {
       background: #f8fafc;
-      padding: 20px;
-      border-radius: 12px;
-      border: 2px solid #e2e8f0;
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-      transform: translateY(20px);
-      opacity: 0;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
     }
-    .slide.active .team-card {
-      animation: cardCascade 0.5s ease forwards;
-    }
-    .slide.active .team-card:nth-child(1) { animation-delay: 0.1s; }
-    .slide.active .team-card:nth-child(2) { animation-delay: 0.2s; }
-    .slide.active .team-card:nth-child(3) { animation-delay: 0.3s; }
-    .slide.active .team-card:nth-child(4) { animation-delay: 0.4s; }
-    .slide.active .team-card:nth-child(5) { animation-delay: 0.5s; }
-    .slide.active .team-card:nth-child(6) { animation-delay: 0.6s; }
-
-    @keyframes cardCascade {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .team-card h3 { color: #1e293b; font-size: 1.1rem; }
-    .team-card p { color: #3b82f6; font-size: 0.95rem; font-weight: 600; }
 
     .content-box {
       background: #ffffff;
-      border-left: 6px solid #2563eb;
-      padding: 25px 30px;
+      border-left: 5px solid #2563eb;
+      padding: 20px 25px;
       border-radius: 8px;
-      max-width: 850px;
+      max-width: 800px;
       width: 100%;
       text-align: left;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
-      transform: scale(0.95);
-      opacity: 0;
-    }
-    .slide.active .content-box {
-      animation: boxZoom 0.6s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-    @keyframes boxZoom {
-      to { opacity: 1; transform: scale(1); }
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+      border-top: 1px solid #f1f5f9;
+      border-right: 1px solid #f1f5f9;
+      border-bottom: 1px solid #f1f5f9;
     }
 
     .content-box p, .content-box li {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: #334155;
       line-height: 1.6;
     }
@@ -167,40 +132,41 @@
     .chart-container {
       position: relative;
       width: 100%;
-      max-width: 550px;
-      height: 320px;
+      max-width: 500px;
+      height: 280px;
       margin-top: 15px;
     }
 
     .controls {
       position: fixed;
       bottom: 20px;
-      right: 30px;
+      right: 20px;
       display: flex;
-      gap: 12px;
+      gap: 10px;
       z-index: 1000;
     }
     .btn {
       background: #2563eb;
       color: #ffffff;
       border: none;
-      padding: 12px 24px;
-      border-radius: 8px;
+      padding: 10px 20px;
+      border-radius: 6px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
     }
-    .btn:hover { background: #1d4ed8; transform: translateY(-2px); }
+    .btn:active {
+      transform: scale(0.95);
+    }
     .slide-number {
       position: fixed;
-      top: 20px;
-      right: 30px;
-      font-size: 0.9rem;
+      top: 15px;
+      right: 15px;
+      font-size: 0.85rem;
       color: #1e293b;
       z-index: 1000;
       background: #f1f5f9;
-      padding: 6px 16px;
+      padding: 5px 12px;
       border-radius: 20px;
       font-weight: 700;
       border: 1px solid #cbd5e1;
@@ -214,9 +180,8 @@
 
     <!-- Slide 1: Welcome -->
     <div class="slide active">
-      <h1 class="welcome-title-mask">WELCOME</h1>
-      <p style="font-size: 1.3rem; color: #475569; font-weight: 600; margin-top: 15px;">TO OUR PRESENTATION</p>
-      <p style="font-size: 1rem; color: #94a3b8; margin-top: 5px;">Economics Project Analysis</p>
+      <h1 class="welcome-title-animated">WELCOME TO OUR PRESENTATION</h1>
+      <p style="font-size: 1.2rem; color: #475569; font-weight: 600;">Economics Project Analysis</p>
     </div>
 
     <!-- Slide 2: Team Introduction -->
@@ -237,7 +202,7 @@
       <h2 class="slide-title">India's Bad-Loan Turnaround</h2>
       <div class="content-box">
         <p><strong>Sub-topic:</strong> Classifying Banking Assets, Then & Now</p>
-        <p style="margin-top: 12px;">An overview of how Indian public and private sector banks transitioned from peak non-performing assets (NPAs) to robust balance sheets through regulatory and structural reforms.</p>
+        <p style="margin-top: 10px;">An overview of how Indian public and private sector banks transitioned from peak non-performing assets (NPAs) to robust balance sheets through regulatory and structural reforms.</p>
       </div>
     </div>
 
@@ -361,8 +326,8 @@
 
     <!-- Slide 16: Thank You -->
     <div class="slide">
-      <h1 class="welcome-title-mask">THANK YOU</h1>
-      <p style="font-size: 1.2rem; color: #475569; font-weight: 600; margin-top: 15px;">Questions & Discussion</p>
+      <h1 class="welcome-title-animated">THANK YOU!</h1>
+      <p style="font-size: 1.2rem; color: #475569; font-weight: 600;">Questions & Discussion</p>
     </div>
 
   </div>
