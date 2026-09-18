@@ -1,15 +1,16 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>India's Bad-Loan Turnaround</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background-color: #0b0f19;
-      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -20,7 +21,8 @@
       width: 100vw;
       height: 100vh;
       position: relative;
-      background: #0f172a;
+      background: #ffffff;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
       display: flex;
       flex-direction: column;
     }
@@ -28,7 +30,7 @@
       display: none;
       width: 100%;
       height: 100%;
-      padding: 30px 20px 80px 20px;
+      padding: 40px 60px 80px 60px;
       position: absolute;
       top: 0; left: 0;
       overflow-y: auto;
@@ -37,168 +39,287 @@
       align-items: center;
       text-align: center;
       opacity: 0;
-      transition: opacity 0.5s ease-in-out, transform 0.5s ease;
-      transform: scale(0.98);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: scale(0.96) translateY(10px);
+      background: #ffffff;
     }
     .slide.active {
       display: flex;
       opacity: 1;
-      transform: scale(1);
+      transform: scale(1) translateY(0);
     }
     
-    /* Dynamic Animated Background */
-    .welcome-slide {
-      background: linear-gradient(rgba(11, 15, 25, 0.75), rgba(11, 15, 25, 0.85)), 
-                  url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
-      animation: zoomBg 12s infinite alternate ease-in-out;
+    /* Dynamic Image Mask Animation for Welcome & Thank You */
+    .animated-bg-slide {
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(241,245,249,0.9)), 
+                  url('https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      animation: smoothZoom 10s infinite alternate ease-in-out;
     }
-    @keyframes zoomBg {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.08); }
+    @keyframes smoothZoom {
+      0% { background-size: 100%; }
+      100% { background-size: 110%; }
     }
+
     .welcome-title {
-      font-size: clamp(2.5rem, 7vw, 4.5rem);
-      font-weight: 900;
-      letter-spacing: 3px;
-      background: linear-gradient(45deg, #00f2fe, #4facfe, #ff0844);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 15px;
-      text-transform: uppercase;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      color: #1e3a8a;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
     }
     .slide-title {
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      color: #38bdf8;
-      margin-bottom: 20px;
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      color: #1e3a8a;
+      margin-bottom: 25px;
       font-weight: 700;
+      border-bottom: 3px solid #3b82f6;
+      padding-bottom: 8px;
     }
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 12px;
+    
+    .member-badge {
+      position: absolute;
+      top: 25px;
+      left: 30px;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* Grid Layouts */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 900px;
+    }
+    .team-card {
+      background: #f1f5f9;
       padding: 20px;
-      margin: 10px 0;
-      width: 90%;
-      max-width: 750px;
-      text-align: left;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      transition: transform 0.3s ease;
     }
-    .card p, .card li {
-      font-size: clamp(0.95rem, 3.5vw, 1.2rem);
-      color: #cbd5e1;
+    .team-card:hover { transform: translateY(-5px); }
+    .team-card h3 { color: #0f172a; font-size: 1.1rem; }
+    .team-card p { color: #64748b; font-size: 0.9rem; }
+
+    .content-box {
+      background: #f8fafc;
+      border-left: 5px solid #3b82f6;
+      padding: 20px 30px;
+      border-radius: 8px;
+      max-width: 850px;
+      width: 100%;
+      text-align: left;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      margin-bottom: 15px;
+    }
+    .content-box p, .content-box li {
+      font-size: 1.1rem;
+      color: #334155;
       line-height: 1.6;
     }
-    .card ul { padding-left: 20px; }
-    
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-width: 550px;
+      height: 300px;
+      margin-top: 15px;
+    }
+
     .controls {
       position: fixed;
       bottom: 20px;
-      right: 20px;
+      right: 30px;
       display: flex;
       gap: 12px;
       z-index: 1000;
     }
     .btn {
-      background: #00f2fe;
-      color: #0b0f19;
+      background: #2563eb;
+      color: #ffffff;
       border: none;
-      padding: 12px 22px;
-      border-radius: 8px;
-      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 600;
       cursor: pointer;
-      font-size: 1rem;
-      box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
     }
-    .btn:active { transform: scale(0.95); }
+    .btn:hover { background: #1d4ed8; }
     .slide-number {
       position: fixed;
       top: 20px;
-      right: 20px;
+      right: 30px;
       font-size: 0.9rem;
-      color: #94a3b8;
+      color: #475569;
       z-index: 1000;
-      background: rgba(0,0,0,0.6);
+      background: #e2e8f0;
       padding: 6px 14px;
       border-radius: 20px;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
 
   <div class="presentation-container">
-    <div class="slide-number" id="slideNum">Slide 1 / 8</div>
+    <div class="slide-number" id="slideNum">Slide 1 / 16</div>
 
-    <!-- Slide 1 -->
-    <div class="slide welcome-slide active">
-      <h1 class="welcome-title">WELCOME</h1>
-      <p style="font-size: 1.3rem; color: #e2e8f0;">To Our Economics Presentation</p>
+    <!-- Slide 1: Welcome -->
+    <div class="slide animated-bg-slide active">
+      <h1 class="welcome-title">WELCOME TO OUR PRESENTATION</h1>
+      <p style="font-size: 1.2rem; color: #475569;">Economics Project Analysis</p>
     </div>
 
-    <!-- Slide 2 -->
+    <!-- Slide 2: Team Introduction -->
+    <div class="slide">
+      <h2 class="slide-title">Group Members</h2>
+      <div class="team-grid">
+        <div class="team-card"><h3>Rehan Shaikh</h3><p>Roll No: 37</p></div>
+        <div class="team-card"><h3>Trushty Shirgaonkar</h3><p>Roll No: 41</p></div>
+        <div class="team-card"><h3>Babita Rana</h3><p>Roll No: 65</p></div>
+        <div class="team-card"><h3>Anuja Patil</h3><p>Roll No: 27</p></div>
+        <div class="team-card"><h3>Anushka Sonawane</h3><p>Roll No: 47</p></div>
+        <div class="team-card"><h3>Soumya Manjrekar</h3><p>Roll No: 60</p></div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Topic Intro -->
     <div class="slide">
       <h2 class="slide-title">India's Bad-Loan Turnaround</h2>
-      <div class="card">
-        <p>A comprehensive analysis of how India successfully resolved its non-performing assets (NPA) crisis and revitalized its banking system.</p>
+      <div class="content-box">
+        <p><strong>Sub-topic:</strong> Classifying Banking Assets, Then & Now</p>
+        <p style="margin-top: 10px;">An overview of how Indian public and private sector banks transitioned from peak non-performing assets (NPAs) to robust balance sheets through regulatory and structural reforms.</p>
       </div>
     </div>
 
-    <!-- Slide 3 -->
+    <!-- Slide 4: Rehan 1 -->
     <div class="slide">
-      <h2 class="slide-title">The NPA Crisis Background</h2>
-      <div class="card">
+      <div class="member-badge">Presenter: Rehan Shaikh (37)</div>
+      <h2 class="slide-title">Understanding Asset Classification</h2>
+      <div class="content-box">
         <ul>
-          <li><strong>Twin Balance Sheet Problem:</strong> Over-leveraged corporations and stressed public sector banks.</li>
-          <li><strong>Peak NPAs:</strong> Gross NPAs reached over 11.2% around 2017-2018.</li>
+          <li><strong>Standard Assets:</strong> Regular repayments without default risks.</li>
+          <li><strong>Sub-standard Assets:</strong> NPA for less than or equal to 12 months.</li>
+          <li><strong>Doubtful / Loss Assets:</strong> High risk of non-recovery requiring provisioning.</li>
         </ul>
       </div>
     </div>
 
-    <!-- Slide 4 -->
+    <!-- Slide 5: Rehan 2 (Bar Chart) -->
     <div class="slide">
-      <h2 class="slide-title">Key Recovery Frameworks</h2>
-      <div class="card">
+      <div class="member-badge">Presenter: Rehan Shaikh (37)</div>
+      <h2 class="slide-title">Historical Gross NPA Trends</h2>
+      <div class="chart-container"><canvas id="barChartNPA"></canvas></div>
+    </div>
+
+    <!-- Slide 6: Trushty 1 -->
+    <div class="slide">
+      <div class="member-badge">Presenter: Trushty Shirgaonkar (41)</div>
+      <h2 class="slide-title">The "Then" Era: The NPA Peak</h2>
+      <div class="content-box">
+        <p>Unchecked credit growth post-2008 led to a surge in bad loans. Peak Gross NPA ratio reached **11.2% in FY18**, creating severe capital stress across Public Sector Banks (PSBs).</p>
+      </div>
+    </div>
+
+    <!-- Slide 7: Trushty 2 (Pie Chart) -->
+    <div class="slide">
+      <div class="member-badge">Presenter: Trushty Shirgaonkar (41)</div>
+      <h2 class="slide-title">Asset Share During Peak Crisis</h2>
+      <div class="chart-container"><canvas id="pieChartThen"></canvas></div>
+    </div>
+
+    <!-- Slide 8: Babita 1 -->
+    <div class="slide">
+      <div class="member-badge">Presenter: Babita Rana (65)</div>
+      <h2 class="slide-title">Regulatory Interventions (4R Strategy)</h2>
+      <div class="content-box">
+        <p><strong>Recognition:</strong> Asset Quality Review (AQR) by RBI.</p>
+        <p><strong>Resolution:</strong> Insolvency & Bankruptcy Code (IBC) 2016.</p>
+        <p><strong>Recapitalization:</strong> Capital infusion into PSBs.</p>
+        <p><strong>Reforms:</strong> Better governance and risk management.</p>
+      </div>
+    </div>
+
+    <!-- Slide 9: Babita 2 -->
+    <div class="slide">
+      <div class="member-badge">Presenter: Babita Rana (65)</div>
+      <h2 class="slide-title">Role of IBC Code 2016</h2>
+      <div class="content-box">
         <ul>
-          <li><strong>IBC 2016:</strong> Insolvency and Bankruptcy Code provided time-bound resolution.</li>
-          <li><strong>Asset Reconstruction (NARCL):</strong> Bad bank structure to aggregate stressed assets.</li>
+          <li>Time-bound resolution framework for defaulting companies.</li>
+          <li>Significantly improved creditor bargaining power and recovery rates.</li>
         </ul>
       </div>
     </div>
 
-    <!-- Slide 5 -->
+    <!-- Slide 10: Anuja 1 -->
     <div class="slide">
-      <h2 class="slide-title">4R Strategy</h2>
-      <div class="card">
-        <p><strong>1. Recognition:</strong> Clean up balance sheets transparently.</p>
-        <p><strong>2. Resolution:</strong> Speedy recovery through IBC.</p>
-        <p><strong>3. Recapitalization:</strong> Infusing capital into PSBs.</p>
-        <p><strong>4. Reforms:</strong> Governance and credit risk enhancement.</p>
+      <div class="member-badge">Presenter: Anuja Patil (27)</div>
+      <h2 class="slide-title">The "Now" Era: Recovery & Clean Balance Sheets</h2>
+      <div class="content-box">
+        <p>Gross NPAs dropped below 3% recently, marking a multi-decade low due to write-offs, recoveries, and prudent lending strategies.</p>
       </div>
     </div>
 
-    <!-- Slide 6 -->
+    <!-- Slide 11: Anuja 2 (Pie Chart) -->
     <div class="slide">
-      <h2 class="slide-title">Current Situation & Impact</h2>
-      <div class="card">
+      <div class="member-badge">Presenter: Anuja Patil (27)</div>
+      <h2 class="slide-title">Current Asset Share Distribution</h2>
+      <div class="chart-container"><canvas id="pieChartNow"></canvas></div>
+    </div>
+
+    <!-- Slide 12: Anushka 1 -->
+    <div class="slide">
+      <div class="member-badge">Presenter: Anushka Sonawane (47)</div>
+      <h2 class="slide-title">Impact on Banking Profitability</h2>
+      <div class="content-box">
         <ul>
-          <li>Gross NPAs dropped significantly below 3% in recent years.</li>
-          <li>Bank balance sheets are now stronger with healthy credit growth.</li>
+          <li>PSBs recorded net profits exceeding ₹1 trillion in recent financial cycles.</li>
+          <li>Provision Coverage Ratio (PCR) improved to over 75%.</li>
         </ul>
       </div>
     </div>
 
-    <!-- Slide 7 -->
+    <!-- Slide 13: Anushka 2 -->
     <div class="slide">
-      <h2 class="slide-title">Future Outlook</h2>
-      <div class="card">
-        <p>Sustaining risk underwriting standards, monitoring retail loans, and digital risk analytics to prevent future distress cycles.</p>
+      <div class="member-badge">Presenter: Anushka Sonawane (47)</div>
+      <h2 class="slide-title">NARCL & Bad Bank Mechanism</h2>
+      <div class="content-box">
+        <p>National Asset Reconstruction Company Ltd. (NARCL) aggregates bad loans to free up bank operational capacity for new credit extension.</p>
       </div>
     </div>
 
-    <!-- Slide 8 -->
-    <div class="slide welcome-slide">
-      <h1 class="welcome-title">THANK YOU</h1>
-      <p style="font-size: 1.2rem; color: #cbd5e1;">Questions & Discussion</p>
+    <!-- Slide 14: Soumya 1 -->
+    <div class="slide">
+      <div class="member-badge">Presenter: Soumya Manjrekar (60)</div>
+      <h2 class="slide-title">Future Outlook & Risk Analytics</h2>
+      <div class="content-box">
+        <p>Shift towards digital credit underwriting, early warning signals (EWS), and monitoring retail/MSME portfolios to prevent fresh slippages.</p>
+      </div>
+    </div>
+
+    <!-- Slide 15: Soumya 2 -->
+    <div class="slide">
+      <div class="member-badge">Presenter: Soumya Manjrekar (60)</div>
+      <h2 class="slide-title">Key Takeaways</h2>
+      <div class="content-box">
+        <ul>
+          <li>India successfully navigated from a high-NPA trap to balance sheet resilience.</li>
+          <li>Strong regulatory framework ensures long-term macroeconomic stability.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Slide 16: Thank You -->
+    <div class="slide animated-bg-slide">
+      <h1 class="welcome-title">THANK YOU!</h1>
+      <p style="font-size: 1.2rem; color: #475569;">Any Questions?</p>
     </div>
 
   </div>
@@ -234,6 +355,49 @@
         currentSlide--;
         updateSlide();
       }
+    }
+
+    // Initialize Charts
+    window.onload = function() {
+      // Bar Chart
+      new Chart(document.getElementById('barChartNPA'), {
+        type: 'bar',
+        data: {
+          labels: ['FY18', 'FY20', 'FY22', 'FY24'],
+          datasets: [{
+            label: 'Gross NPA Ratio (%)',
+            data: [11.2, 8.2, 5.8, 2.8],
+            backgroundColor: '#3b82f6'
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+
+      // Pie Chart 1
+      new Chart(document.getElementById('pieChartThen'), {
+        type: 'pie',
+        data: {
+          labels: ['Standard Assets', 'Sub-Standard/NPAs'],
+          datasets: [{
+            data: [88.8, 11.2],
+            backgroundColor: ['#22c55e', '#ef4444']
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+
+      // Pie Chart 2
+      new Chart(document.getElementById('pieChartNow'), {
+        type: 'pie',
+        data: {
+          labels: ['Standard Assets', 'Sub-Standard/NPAs'],
+          datasets: [{
+            data: [97.2, 2.8],
+            backgroundColor: ['#22c55e', '#ef4444']
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
     }
   </script>
 </body>
