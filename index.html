@@ -8,8 +8,8 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f8fafc;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #ffffff;
       color: #0f172a;
       display: flex;
       justify-content: center;
@@ -22,7 +22,6 @@
       height: 100vh;
       position: relative;
       background: #ffffff;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
       display: flex;
       flex-direction: column;
     }
@@ -30,7 +29,7 @@
       display: none;
       width: 100%;
       height: 100%;
-      padding: 40px 60px 80px 60px;
+      padding: 40px 20px 80px 20px;
       position: absolute;
       top: 0; left: 0;
       overflow-y: auto;
@@ -38,86 +37,127 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      opacity: 0;
-      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      transform: scale(0.96) translateY(10px);
       background: #ffffff;
+      opacity: 0;
     }
+
+    /* MORPH / SLIDE ANIMATIONS */
     .slide.active {
       display: flex;
       opacity: 1;
-      transform: scale(1) translateY(0);
-    }
-    
-    /* Dynamic Image Mask Animation for Welcome & Thank You */
-    .animated-bg-slide {
-      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(241,245,249,0.9)), 
-                  url('https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-      animation: smoothZoom 10s infinite alternate ease-in-out;
-    }
-    @keyframes smoothZoom {
-      0% { background-size: 100%; }
-      100% { background-size: 110%; }
+      animation: slideInMorph 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     }
 
-    .welcome-title {
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      font-weight: 800;
-      color: #1e3a8a;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
+    @keyframes slideInMorph {
+      0% {
+        opacity: 0;
+        transform: scale(0.85) translateY(40px) rotateX(-10deg);
+        filter: blur(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0) rotateX(0deg);
+        filter: blur(0px);
+      }
     }
+
+    /* VIDEO REFERENCE 1: ANIMATED TEXT IMAGE MASK FOR WELCOME */
+    .welcome-title-mask {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      background: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80') center/cover;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: panBackground 12s infinite alternate linear;
+    }
+    @keyframes panBackground {
+      0% { background-position: left center; }
+      100% { background-position: right center; }
+    }
+
     .slide-title {
       font-size: clamp(1.6rem, 4vw, 2.5rem);
       color: #1e3a8a;
       margin-bottom: 25px;
-      font-weight: 700;
-      border-bottom: 3px solid #3b82f6;
-      padding-bottom: 8px;
+      font-weight: 800;
+      animation: titlePop 0.8s ease-out forwards;
+    }
+    @keyframes titlePop {
+      0% { transform: translateY(-20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
     }
     
     .member-badge {
       position: absolute;
       top: 25px;
       left: 30px;
-      background: #e0f2fe;
-      color: #0369a1;
-      padding: 6px 16px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 6px 18px;
       border-radius: 20px;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.9rem;
     }
 
-    /* Grid Layouts */
+    /* TEAM GRID ANIMATION */
     .team-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
       width: 100%;
       max-width: 900px;
     }
     .team-card {
-      background: #f1f5f9;
+      background: #f8fafc;
       padding: 20px;
       border-radius: 12px;
-      border: 1px solid #e2e8f0;
-      transition: transform 0.3s ease;
+      border: 2px solid #e2e8f0;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+      transform: translateY(20px);
+      opacity: 0;
     }
-    .team-card:hover { transform: translateY(-5px); }
-    .team-card h3 { color: #0f172a; font-size: 1.1rem; }
-    .team-card p { color: #64748b; font-size: 0.9rem; }
+    .slide.active .team-card {
+      animation: cardCascade 0.5s ease forwards;
+    }
+    .slide.active .team-card:nth-child(1) { animation-delay: 0.1s; }
+    .slide.active .team-card:nth-child(2) { animation-delay: 0.2s; }
+    .slide.active .team-card:nth-child(3) { animation-delay: 0.3s; }
+    .slide.active .team-card:nth-child(4) { animation-delay: 0.4s; }
+    .slide.active .team-card:nth-child(5) { animation-delay: 0.5s; }
+    .slide.active .team-card:nth-child(6) { animation-delay: 0.6s; }
+
+    @keyframes cardCascade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .team-card h3 { color: #1e293b; font-size: 1.1rem; }
+    .team-card p { color: #3b82f6; font-size: 0.95rem; font-weight: 600; }
 
     .content-box {
-      background: #f8fafc;
-      border-left: 5px solid #3b82f6;
-      padding: 20px 30px;
+      background: #ffffff;
+      border-left: 6px solid #2563eb;
+      padding: 25px 30px;
       border-radius: 8px;
       max-width: 850px;
       width: 100%;
       text-align: left;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-      margin-bottom: 15px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
+      transform: scale(0.95);
+      opacity: 0;
     }
+    .slide.active .content-box {
+      animation: boxZoom 0.6s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes boxZoom {
+      to { opacity: 1; transform: scale(1); }
+    }
+
     .content-box p, .content-box li {
       font-size: 1.1rem;
       color: #334155;
@@ -128,7 +168,7 @@
       position: relative;
       width: 100%;
       max-width: 550px;
-      height: 300px;
+      height: 320px;
       margin-top: 15px;
     }
 
@@ -144,24 +184,26 @@
       background: #2563eb;
       color: #ffffff;
       border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      transition: all 0.2s ease;
     }
-    .btn:hover { background: #1d4ed8; }
+    .btn:hover { background: #1d4ed8; transform: translateY(-2px); }
     .slide-number {
       position: fixed;
       top: 20px;
       right: 30px;
       font-size: 0.9rem;
-      color: #475569;
+      color: #1e293b;
       z-index: 1000;
-      background: #e2e8f0;
-      padding: 6px 14px;
+      background: #f1f5f9;
+      padding: 6px 16px;
       border-radius: 20px;
-      font-weight: 600;
+      font-weight: 700;
+      border: 1px solid #cbd5e1;
     }
   </style>
 </head>
@@ -171,9 +213,10 @@
     <div class="slide-number" id="slideNum">Slide 1 / 16</div>
 
     <!-- Slide 1: Welcome -->
-    <div class="slide animated-bg-slide active">
-      <h1 class="welcome-title">WELCOME TO OUR PRESENTATION</h1>
-      <p style="font-size: 1.2rem; color: #475569;">Economics Project Analysis</p>
+    <div class="slide active">
+      <h1 class="welcome-title-mask">WELCOME</h1>
+      <p style="font-size: 1.3rem; color: #475569; font-weight: 600; margin-top: 15px;">TO OUR PRESENTATION</p>
+      <p style="font-size: 1rem; color: #94a3b8; margin-top: 5px;">Economics Project Analysis</p>
     </div>
 
     <!-- Slide 2: Team Introduction -->
@@ -194,7 +237,7 @@
       <h2 class="slide-title">India's Bad-Loan Turnaround</h2>
       <div class="content-box">
         <p><strong>Sub-topic:</strong> Classifying Banking Assets, Then & Now</p>
-        <p style="margin-top: 10px;">An overview of how Indian public and private sector banks transitioned from peak non-performing assets (NPAs) to robust balance sheets through regulatory and structural reforms.</p>
+        <p style="margin-top: 12px;">An overview of how Indian public and private sector banks transitioned from peak non-performing assets (NPAs) to robust balance sheets through regulatory and structural reforms.</p>
       </div>
     </div>
 
@@ -203,10 +246,10 @@
       <div class="member-badge">Presenter: Rehan Shaikh (37)</div>
       <h2 class="slide-title">Understanding Asset Classification</h2>
       <div class="content-box">
-        <ul>
+        <ul style="padding-left: 20px;">
           <li><strong>Standard Assets:</strong> Regular repayments without default risks.</li>
-          <li><strong>Sub-standard Assets:</strong> NPA for less than or equal to 12 months.</li>
-          <li><strong>Doubtful / Loss Assets:</strong> High risk of non-recovery requiring provisioning.</li>
+          <li style="margin-top: 8px;"><strong>Sub-standard Assets:</strong> NPA for less than or equal to 12 months.</li>
+          <li style="margin-top: 8px;"><strong>Doubtful / Loss Assets:</strong> High risk of non-recovery requiring provisioning.</li>
         </ul>
       </div>
     </div>
@@ -223,7 +266,7 @@
       <div class="member-badge">Presenter: Trushty Shirgaonkar (41)</div>
       <h2 class="slide-title">The "Then" Era: The NPA Peak</h2>
       <div class="content-box">
-        <p>Unchecked credit growth post-2008 led to a surge in bad loans. Peak Gross NPA ratio reached **11.2% in FY18**, creating severe capital stress across Public Sector Banks (PSBs).</p>
+        <p>Unchecked credit growth post-2008 led to a surge in bad loans. Peak Gross NPA ratio reached <strong>11.2% in FY18</strong>, creating severe capital stress across Public Sector Banks (PSBs).</p>
       </div>
     </div>
 
@@ -239,10 +282,10 @@
       <div class="member-badge">Presenter: Babita Rana (65)</div>
       <h2 class="slide-title">Regulatory Interventions (4R Strategy)</h2>
       <div class="content-box">
-        <p><strong>Recognition:</strong> Asset Quality Review (AQR) by RBI.</p>
-        <p><strong>Resolution:</strong> Insolvency & Bankruptcy Code (IBC) 2016.</p>
-        <p><strong>Recapitalization:</strong> Capital infusion into PSBs.</p>
-        <p><strong>Reforms:</strong> Better governance and risk management.</p>
+        <p><strong>1. Recognition:</strong> Asset Quality Review (AQR) by RBI.</p>
+        <p style="margin-top: 6px;"><strong>2. Resolution:</strong> Insolvency & Bankruptcy Code (IBC) 2016.</p>
+        <p style="margin-top: 6px;"><strong>3. Recapitalization:</strong> Capital infusion into PSBs.</p>
+        <p style="margin-top: 6px;"><strong>4. Reforms:</strong> Better governance and risk management.</p>
       </div>
     </div>
 
@@ -251,9 +294,9 @@
       <div class="member-badge">Presenter: Babita Rana (65)</div>
       <h2 class="slide-title">Role of IBC Code 2016</h2>
       <div class="content-box">
-        <ul>
+        <ul style="padding-left: 20px;">
           <li>Time-bound resolution framework for defaulting companies.</li>
-          <li>Significantly improved creditor bargaining power and recovery rates.</li>
+          <li style="margin-top: 8px;">Significantly improved creditor bargaining power and recovery rates.</li>
         </ul>
       </div>
     </div>
@@ -279,9 +322,9 @@
       <div class="member-badge">Presenter: Anushka Sonawane (47)</div>
       <h2 class="slide-title">Impact on Banking Profitability</h2>
       <div class="content-box">
-        <ul>
+        <ul style="padding-left: 20px;">
           <li>PSBs recorded net profits exceeding ₹1 trillion in recent financial cycles.</li>
-          <li>Provision Coverage Ratio (PCR) improved to over 75%.</li>
+          <li style="margin-top: 8px;">Provision Coverage Ratio (PCR) improved to over 75%.</li>
         </ul>
       </div>
     </div>
@@ -309,17 +352,17 @@
       <div class="member-badge">Presenter: Soumya Manjrekar (60)</div>
       <h2 class="slide-title">Key Takeaways</h2>
       <div class="content-box">
-        <ul>
+        <ul style="padding-left: 20px;">
           <li>India successfully navigated from a high-NPA trap to balance sheet resilience.</li>
-          <li>Strong regulatory framework ensures long-term macroeconomic stability.</li>
+          <li style="margin-top: 8px;">Strong regulatory framework ensures long-term macroeconomic stability.</li>
         </ul>
       </div>
     </div>
 
     <!-- Slide 16: Thank You -->
-    <div class="slide animated-bg-slide">
-      <h1 class="welcome-title">THANK YOU!</h1>
-      <p style="font-size: 1.2rem; color: #475569;">Any Questions?</p>
+    <div class="slide">
+      <h1 class="welcome-title-mask">THANK YOU</h1>
+      <p style="font-size: 1.2rem; color: #475569; font-weight: 600; margin-top: 15px;">Questions & Discussion</p>
     </div>
 
   </div>
@@ -357,9 +400,7 @@
       }
     }
 
-    // Initialize Charts
     window.onload = function() {
-      // Bar Chart
       new Chart(document.getElementById('barChartNPA'), {
         type: 'bar',
         data: {
@@ -367,13 +408,12 @@
           datasets: [{
             label: 'Gross NPA Ratio (%)',
             data: [11.2, 8.2, 5.8, 2.8],
-            backgroundColor: '#3b82f6'
+            backgroundColor: '#2563eb'
           }]
         },
         options: { responsive: true, maintainAspectRatio: false }
       });
 
-      // Pie Chart 1
       new Chart(document.getElementById('pieChartThen'), {
         type: 'pie',
         data: {
@@ -386,7 +426,6 @@
         options: { responsive: true, maintainAspectRatio: false }
       });
 
-      // Pie Chart 2
       new Chart(document.getElementById('pieChartNow'), {
         type: 'pie',
         data: {
